@@ -6,74 +6,22 @@ from datetime import date
 from flask_marshmallow import Marshmallow
 
 
-app = Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 
 
-class Base(DeclarativeBase):
-    pass
 
 
-db = SQLAlchemy(model_class = Base)
-ma = Marshmallow()
 
 
-db.init_app(app)
 
 
-service_mechanics = Table(
-    "service_mechanics",
-    Base.metadata,
-    Column("service_tickets_id",Integer, ForeignKey("service_tickets.id")),
-    Column("mechanics_id",Integer, ForeignKey("mechanics.id"))
-)
 
 
-class Customers(Base):
-    __tablename__ = 'customers'
-    
-    id: Mapped[int] = mapped_column(primary_key=True)
-    first_name: Mapped[str] = mapped_column(String(80), nullable=False)
-    last_name: Mapped[str] = mapped_column(String(80), nullable=False)
-    email: Mapped[str] = mapped_column(String(360), nullable=False, unique=True)
-    phone: Mapped[str] = mapped_column(String(80), nullable=False)
-    address: Mapped[str] = mapped_column(String(80), nullable=False)
-    
-    service_tickets: Mapped[list['Service_Tickets']] = relationship('Service_Tickets', back_populates='customer')
-       
-    
 
-class Service_Tickets(Base):
-    __tablename__ = 'service_tickets'
-    
-    id: Mapped[int] = mapped_column(primary_key=True)
-    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
-    service_desc: Mapped[str] = mapped_column(String(80), nullable=False)
-    price: Mapped[float] = mapped_column(Float, nullable=False, unique=True)
-    vin: Mapped[str] = mapped_column(String(40), nullable=False)
-    service_date: Mapped[Date] = mapped_column(Date, nullable=False)
-    
-  
-    customer: Mapped["Customers"] = relationship("Customers", back_populates="service_tickets")
-   
-    mechanics: Mapped[list["Mechanics"]] = relationship("Mechanics", secondary=service_mechanics, 
-                                                        back_populates="service_tickets")
-    
-                
-         
-class Mechanics(Base):
-    __tablename__ = 'mechanics'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    first_name: Mapped[str] = mapped_column(String(80), nullable=False)
-    last_name: Mapped[str] = mapped_column(String(80), nullable=False)
-    email: Mapped[str] = mapped_column(String(360), nullable=False)
-    password: Mapped[str] = mapped_column(String(80), nullable=False, unique=True)
-    salary: Mapped[float] = mapped_column(Float, nullable=False)
-    address: Mapped[str] = mapped_column(String(80), nullable=False)
-    
-    service_tickets: Mapped[list["Service_Tickets"]] = relationship("Service_Tickets", secondary=service_mechanics, 
-                                                                    back_populates="mechanics")
+
+
+
+
+
     
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
@@ -120,6 +68,31 @@ def read_user(user_id):
     db.session.commit()
     return jsonify({"messgae": f"Successfully Deleted User {user_id}"}), 200
 
+
+#Update a User
+@users_bp.route('<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    user = db.session.get(Users, user_id) #Query for our user to update
+
+    if not user: #Checking if I got a user
+        return jsonify({"message": "user not found"}), 404  #if not return error message
+    
+    try:
+        user_data = user_schema.load(request.json) #Validating updates
+    except ValidationError as e:
+        return jsonify({"message": e.messages}), 400
+    
+    for key, value in user_data.items(): #Looping over attributes and values from user data dictionary
+        setattr(user, key, value) # setting Object, Attribute, Value to replace
+
+    db.session.commit()
+    return user_schema.jsonify(user), 200
+    
+#Query the user by id
+#Validate and Deserialze the updates that they are sending in the body of the request
+#for each of the values that they are sending, we will change the value of the queried object
+#commit the changes
+#return a response
 
 
 with app.app_context():
