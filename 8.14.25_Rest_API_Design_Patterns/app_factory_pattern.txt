@@ -5,10 +5,10 @@
 │   ├── extensions.py
 │   ├── /blueprints
 │	│		├──/mechanics
-│	│				├──__init__.py  - Initializt User Blueprint
-│	│				├── routes.py  - Create User Controllers/routes
-│	│				└── schemas.py
-│	│
+│	│		│		├──__init__.py  - Initializt User Blueprint
+│	│		│		├── routes.py  - Create User Controllers/routes
+│	│		│		└── schemas.py
+│	│       │
 │	│		├──/service_tickets
 │	│				├──__init__.py  - Initializt User Blueprint
 │	│				├── routes.py  - Create User Controllers/routes
