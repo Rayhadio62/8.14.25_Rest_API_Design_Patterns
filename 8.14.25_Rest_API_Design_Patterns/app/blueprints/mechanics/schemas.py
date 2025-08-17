@@ -1,10 +1,12 @@
 from app.extensions import ma
-from app.models import Users
+from app.models import Mechanics
 
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Users
+        model = Mechanics
+        include_FK = True
+        
 
-user_schema = UserSchema() 
-users_schema = UserSchema(many=True)
+mechanic_schema = MechanicSchema() 
+mechanics_schema = MechanicSchema(many=True)
