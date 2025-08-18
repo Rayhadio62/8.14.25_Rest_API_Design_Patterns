@@ -38,7 +38,7 @@ def read_service_tickets():
 @service_tickets_bp.route('/service_tickets/<int:service_ticket_id>', methods=["DELETE"])
 def read_service_ticket(service_ticket_id):
     service_ticket = db.session.get(Service_tickets, service_ticket_id)
-    db.session,delete(service_ticket)
+    db.session.delete(service_ticket)
     db.session.commit()
     return jsonify({"messgae": f"Successfully Deleted Service_Ticket {service_ticket_id}"}), 200
 
