@@ -1,7 +1,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import Date, String, ForeignKey, Float, Table, Column, Integer
+from sqlalchemy import Date, String, ForeignKey, Float, String, Table, Column, Integer
 from datetime import date
 
 
@@ -64,12 +64,5 @@ class Mechanics(Base):
     address: Mapped[str] = mapped_column(String(80), nullable=False)
     
     service_tickets: Mapped[list["Service_Tickets"]] = relationship("Service_Tickets", secondary=service_mechanics, 
-                                                                    back_populates="mechanics")
-    
+                                                                    back_populates="mechanics")    
 
-class UserSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Users
-        
-user_schema = UserSchema()
-users_schema = UsersSchema(many=True)

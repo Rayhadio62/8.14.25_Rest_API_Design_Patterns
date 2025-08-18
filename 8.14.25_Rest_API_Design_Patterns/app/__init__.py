@@ -1,7 +1,9 @@
 from flask import Flask
 from .models import db
 from .extensions import ma
-from .blueprints.users import users_bp
+from .blueprints.mechanics import mechanics_bp
+from .blueprints.service_tickets import service_tickets_bp
+
 
 
 def create_app(config_name):

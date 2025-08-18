@@ -6,7 +6,7 @@ from app.models import Mechanics, db
 
 
 #CREATE ROUTE
-@app.route('/mechanics', methods=['POST'])
+@mechanics_bp.route('/mechanics', methods=['POST'])
 def create_mechanic():
     try:
         data = mechanic_schema.load(request.json)
@@ -21,24 +21,24 @@ def create_mechanic():
 
 
 #Read
-@app.route('/mechanics', methods=["GET"])
+@mechanics_bp.route('/mechanics', methods=["GET"])
 def read_mechanics():
     mechanics = db.session.query(Mechanics).all()
     return mechanics_schema.jsonify(mechanics), 200
 
 
 #Read Individual Mechanic - Using a Dynamic Endpoint
-@app.route('/mechanics/<int:mechanic_id>', methods=["GET"])
-def read_mechanics():
-    mechanics = db.session.get(Mechanics, mechanic_id)
+@mechanics_bp.route('/mechanics/<int:mechanic_id>', methods=["GET"])
+def read_mechanics(mechanic_id):
+    mechanic = db.session.get(Mechanics, mechanic_id)
     return mechanics_schema.jsonify(mechanic), 200
 
 
 #Delete
-@app.route('/mechanic/<int:mechanic_id>', methods=["DELETE"])
-def read_mechanic(mechanic_id):
-    mechanic = db.session.get(Mechanics, mechnaic_id)
-    db.session,delete(mechanic)
+@mechanics_bp.route('/mechanic/<int:mechanic_id>', methods=["DELETE"])
+def delete_mechanic(mechanic_id):
+    mechanic = db.session.get(Mechanics, mechanic_id)
+    db.session.delete(mechanic)
     db.session.commit()
     return jsonify({"messgae": f"Successfully Deleted Mechanic {mechanic_id}"}), 200
 
@@ -46,7 +46,7 @@ def read_mechanic(mechanic_id):
 #Update
 @mechanics_bp.route('<int:mechanic_id>', methods=['PUT'])
 def update_mechanic(mechanic_id):
-    user = db.session.get(Mechanics, mechanic_id) #Query for our mechanic to update
+    mechanic = db.session.get(Mechanics, mechanic_id) #Query for our mechanic to update
 
     if not mechanic: #Checking if I got a mechanic
         return jsonify({"message": "mechanic not found"}), 404 #if not return error message
@@ -57,8 +57,7 @@ def update_mechanic(mechanic_id):
         return jsonify({"message": e.messages}), 400
     
     for key, value in mechanic_data.items(): #Looping over attributes and values from mechanic data dictionary
-        setattr(user, key, value) # setting Object, Attribute, Value to replace
+        setattr(mechanic, key, value) # setting Object, Attribute, Value to replace
 
     db.session.commit()
     return mechanic_schema.jsonify(mechanic), 200
-
