@@ -31,7 +31,7 @@ def read_mechanics():
 
 #Read Individual Mechanic - Using a Dynamic Endpoint
 @mechanics_bp.route('/mechanics/<int:mechanic_id>', methods=["GET"])
-def read_mechanics(mechanic_id):
+def read_mechanic(mechanic_id):
     mechanic = db.session.get(Mechanics, mechanic_id)
     return mechanics_schema.jsonify(mechanic), 200
 

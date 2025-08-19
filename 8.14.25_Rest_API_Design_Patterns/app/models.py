@@ -6,12 +6,12 @@ from sqlalchemy import Date, String, ForeignKey, Float, String, Table, Column, I
 from datetime import datetime, timedelta
 
 
-
 class Base(DeclarativeBase):
     pass
 
 
 db = SQLAlchemy(model_class = Base)
+
 
 service_mechanics = Table(
     "service_mechanics",

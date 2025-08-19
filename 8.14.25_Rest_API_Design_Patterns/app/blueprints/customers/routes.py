@@ -31,7 +31,7 @@ def read_customers():
 
 #Read Individual Mechanic - Using a Dynamic Endpoint
 @customers_bp.route('/customers/<int:customer_id>', methods=["GET"])
-def read_customers(customer_id):
+def read_customer(customer_id):
     customer = db.session.get(Customers, customer_id)
     return customers_schema.jsonify(customer), 200
 
