@@ -11,8 +11,7 @@ class Base(DeclarativeBase):
     pass
 
 
-
-
+db = SQLAlchemy(model_class = Base)
 
 service_mechanics = Table(
     "service_mechanics",

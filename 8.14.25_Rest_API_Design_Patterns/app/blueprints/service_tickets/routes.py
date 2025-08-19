@@ -3,7 +3,7 @@ from . import service_tickets_bp
 from .schemas import service_ticket_schema, service_tickets_schema
 from flask import request, jsonify
 from marshmallow import ValidationError
-from .app.blueprints.mechanics.schemas import mechanics_schema
+from app.blueprints.mechanics.schemas import mechanics_schema
 from app.models import Service_Tickets, Mechanics, db
 from app.extensions import limiter, cache
 

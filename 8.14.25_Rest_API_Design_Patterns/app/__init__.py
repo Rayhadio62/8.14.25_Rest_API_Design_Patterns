@@ -1,9 +1,11 @@
+
 from flask import Flask
 from .models import db
 from .extensions import ma, limiter, cache
+from .blueprints.customers import customers_bp
 from .blueprints.mechanics import mechanics_bp
 from .blueprints.service_tickets import service_tickets_bp
-from .blueprints.customers import customers_bp
+
 
 
 
