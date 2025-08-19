@@ -1,15 +1,16 @@
 
+from datetime import date
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import Date, String, ForeignKey, Float, String, Table, Column, Integer
-from datetime import date
+from datetime import datetime, timedelta
+
 
 
 class Base(DeclarativeBase):
     pass
 
 
-db = SQLAlchemy(model_class = Base)
 
 
 
