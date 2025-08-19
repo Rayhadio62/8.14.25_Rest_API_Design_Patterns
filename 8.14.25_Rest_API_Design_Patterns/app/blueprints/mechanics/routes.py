@@ -1,8 +1,10 @@
-from app.blueprints.mechanics import mechanics_bp 
+
+from . import mechanics_bp 
 from .schemas import mechanic_schema, mechanics_schema
 from flask import request, jsonify
-from marshmallow import VaidationError
+from marshmallow import ValidationError
 from app.models import Mechanics, db
+from app.extensions import limiter, cache
 
 
 #CREATE ROUTE

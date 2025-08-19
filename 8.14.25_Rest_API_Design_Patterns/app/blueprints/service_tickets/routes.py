@@ -1,15 +1,16 @@
-from app.blueprints.service_tickets import service_tickets_bp 
-from .schemas import services_ticket_schema, service_tickets_schema
-from flask import request, jsonify
-from marshmallow import VaidationError
-from app.models import Service_Tickets, db
 
+from . import service_tickets_bp 
+from .schemas import service_ticket_schema, service_tickets_schema
+from flask import request, jsonify
+from marshmallow import ValidationError
+from app.models import Service_Tickets, db
+from app.extensions import limiter, cache
 
 #CREATE ROUTE
 @service_tickets_bp.route('/service_tickets', methods=['POST'])
 def create_service_ticket():
     try:
-        data = services_ticket_schema.load(request.json)
+        data = service_ticket_schema.load(request.json)
     except ValidationError as e:
         return jsonify(e.messages), 400
     
@@ -44,7 +45,7 @@ def read_service_ticket(service_ticket_id):
 
 
 #Update
-@service_tickets_bp.route('<int:service_ticket_id>', methods=['PUT'])
+@service_tickets_bp.route('/service_tickets/<int:service_ticket_id>', methods=['PUT'])
 def update_service_ticket(service_ticket_id):
     service_ticket = db.session.get(Service_Tickets, service_ticket_id) #Query for our s_t to update
 

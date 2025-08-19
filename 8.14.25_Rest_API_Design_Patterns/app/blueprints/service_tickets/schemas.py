@@ -1,8 +1,9 @@
+
 from app.extensions import ma
 from app.models import Service_Tickets
 
 
-class UserSchema(ma.SQLAlchemyAutoSchema):
+class Service_TicketSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Service_Tickets
         include_FK = True
