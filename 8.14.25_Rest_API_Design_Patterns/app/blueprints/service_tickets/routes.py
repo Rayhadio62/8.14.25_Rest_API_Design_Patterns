@@ -5,7 +5,7 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from app.blueprints.mechanics.schemas import mechanics_schema
 from app.models import Service_Tickets, Mechanics, db
-from app.extensions import limiter, cache
+
 
 #CREATE ROUTE
 @service_tickets_bp.route('/service_tickets', methods=['POST'])
@@ -24,7 +24,7 @@ def create_service_ticket():
 
 #Add mechanic to service ticket
 @service_tickets_bp.route('/<int:service_ticket_id>/add-mechanic/<int:mechanic_id>', methods=['PUT'])
-@limiter.limit("10 per day", override_defaults=True)
+
 def add_mechanic(service_ticket_id, mechanic_id):
     service_ticket = db.session.get(Service_Tickets, service_ticket_id)
     mechanic = db.session.get(Mechanics, mechanic_id)
@@ -42,7 +42,7 @@ def add_mechanic(service_ticket_id, mechanic_id):
 
 #Remove book from loan
 @service_tickets_bp.route('/<int:service_ticket_id>/remove-mechanic/<int:mechanic_id>', methods=['PUT'])
-@limiter.limit("10 per day", override_defaults=True)
+
 def remove_mechanic(service_ticket_id, mechanic_id):
     service_ticket = db.session.get(Service_Tickets, service_ticket_id)
     mechanic = db.session.get(Mechanics, mechanic_id)

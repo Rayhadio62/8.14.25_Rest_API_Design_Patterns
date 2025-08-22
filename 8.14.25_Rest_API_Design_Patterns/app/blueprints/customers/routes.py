@@ -4,7 +4,7 @@ from .schemas import customer_schema, customers_schema
 from flask import request, jsonify
 from marshmallow import ValidationError
 from app.models import Customers, db
-from app.extensions import limiter, cache
+
 
 
 #CREATE ROUTE

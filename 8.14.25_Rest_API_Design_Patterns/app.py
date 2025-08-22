@@ -1,7 +1,7 @@
 
 from app.models import db
 from app import create_app
-# from app.blueprints.mechanics import mechanics_bp
+
 
 
 app = create_app('DevelopmentConfig')
